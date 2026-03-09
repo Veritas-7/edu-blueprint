@@ -201,6 +201,10 @@ const Checklist = () => {
       <PageHeader
         title="실무 체크리스트"
         description="홈페이지 제작 전부터 런칭 직전까지 디자인/UI/UX/콘텐츠/SEO/GEO를 점검하는 9개 카테고리 체크리스트입니다. 체크 상태는 자동 저장됩니다."
+        tocItems={checklists.map((cl) => ({
+          id: `checklist-${cl.category.replace(/\s+/g, '-')}`,
+          label: cl.category,
+        }))}
         summaryCards={[
           { title: "전체 진행률", body: `${percent}% (${checkedCount}/${totalItems})` },
           { title: "9개 카테고리", body: "제작 전, 디자인, UI, UX, 모바일, 콘텐츠, 증빙, SEO, 런칭" },

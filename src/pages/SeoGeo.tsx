@@ -161,6 +161,17 @@ const SeoGeo = () => (
     <PageHeader
       title="SEO/GEO 가이드"
       description="학원/교육 사이트의 검색 유입을 극대화하기 위한 메타 타이틀, URL 구조, JSON-LD 스키마, 내부 링크, 지역+대상 랜딩 전략을 제공합니다."
+      tocItems={[
+        { id: "meta-examples", label: "메타 타이틀/디스크립션" },
+        { id: "url-structure", label: "URL 구조" },
+        { id: "h-tag-rules", label: "H 태그 규칙" },
+        { id: "json-ld", label: "구조화 데이터 (JSON-LD)" },
+        { id: "internal-links", label: "내부 링크 전략" },
+        { id: "canonical-robots", label: "Canonical / Robots / Sitemap" },
+        { id: "landing-design", label: "검색 유입 랜딩 설계" },
+        { id: "og-twitter", label: "Open Graph / Twitter 메타" },
+        { id: "ai-search", label: "AI 검색/요약 대응" },
+      ]}
       summaryCards={[
         { title: "핵심 키워드 조합", body: "지역 + 대상 + 과목 (예: 강남 중등 영어학원)" },
         { title: "스키마 활용", body: "EducationalOrganization, Course, LocalBusiness, FAQPage" },
@@ -175,22 +186,19 @@ const SeoGeo = () => (
       ]}
     />
 
-    {/* 메타 예시 */}
     <section>
-      <h2 className="text-2xl font-bold">메타 타이틀/디스크립션 예시</h2>
+      <h2 id="meta-examples" className="text-2xl font-bold">메타 타이틀/디스크립션 예시</h2>
       <p className="mt-1 text-sm text-muted-foreground">title 60자 이내, description 160자 이내. 핵심 키워드를 앞쪽에 배치.</p>
       <CopyBlock title="페이지별 메타 예시" content={metaExamples} />
     </section>
 
-    {/* URL 구조 */}
     <section>
-      <h2 className="text-2xl font-bold">URL 구조 예시</h2>
+      <h2 id="url-structure" className="text-2xl font-bold">URL 구조 예시</h2>
       <CopyBlock title="URL 구조" content={urlStructure} />
     </section>
 
-    {/* H 태그 규칙 */}
     <section>
-      <h2 className="text-2xl font-bold">H 태그 규칙</h2>
+      <h2 id="h-tag-rules" className="text-2xl font-bold">H 태그 규칙</h2>
       <div className="mt-4 space-y-3">
         {[
           { tag: "H1", rule: "페이지당 1개. 페이지 핵심 주제. 지역+대상+과목 키워드 포함.", example: "강남 중등 영어학원 | 내신 전문" },
@@ -210,9 +218,8 @@ const SeoGeo = () => (
       </div>
     </section>
 
-    {/* JSON-LD */}
     <section>
-      <h2 className="text-2xl font-bold">구조화 데이터 (JSON-LD)</h2>
+      <h2 id="json-ld" className="text-2xl font-bold">구조화 데이터 (JSON-LD)</h2>
       <p className="mt-1 text-sm text-muted-foreground">각 페이지 유형에 맞는 스키마를 적용합니다.</p>
       <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {[
@@ -238,21 +245,18 @@ const SeoGeo = () => (
       </div>
     </section>
 
-    {/* 내부 링크 */}
     <section>
-      <h2 className="text-2xl font-bold">내부 링크 전략</h2>
+      <h2 id="internal-links" className="text-2xl font-bold">내부 링크 전략</h2>
       <CopyBlock title="내부 링크 + Breadcrumb 구조" content={internalLinkStrategy} />
     </section>
 
-    {/* canonical / robots / sitemap */}
     <section>
-      <h2 className="text-2xl font-bold">Canonical / Robots / Sitemap</h2>
+      <h2 id="canonical-robots" className="text-2xl font-bold">Canonical / Robots / Sitemap</h2>
       <CopyBlock title="canonical 규칙 + robots.txt + sitemap" content={canonicalRules} />
     </section>
 
-    {/* 검색 유입 랜딩 */}
     <section>
-      <h2 className="text-2xl font-bold">검색 유입 랜딩 페이지 설계</h2>
+      <h2 id="landing-design" className="text-2xl font-bold">검색 유입 랜딩 페이지 설계</h2>
       <p className="mt-1 text-sm text-muted-foreground">지역+대상+과목 조합으로 검색 의도에 맞는 랜딩 페이지를 설계합니다.</p>
       <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {[
@@ -274,9 +278,8 @@ const SeoGeo = () => (
       </div>
     </section>
 
-    {/* OG / Twitter */}
     <section>
-      <h2 className="text-2xl font-bold">Open Graph / Twitter 메타</h2>
+      <h2 id="og-twitter" className="text-2xl font-bold">Open Graph / Twitter 메타</h2>
       <CopyBlock title="OG/Twitter 메타 태그" content={`<meta property="og:type" content="website" />
 <meta property="og:title" content="강남 영어학원 | 중·고등 내신 전문 - 학원명" />
 <meta property="og:description" content="강남역 도보 5분, 체계적인 영어 커리큘럼. 무료 상담." />
@@ -290,9 +293,8 @@ const SeoGeo = () => (
 <meta name="twitter:image" content="https://example.com/og-image.jpg" />`} />
     </section>
 
-    {/* AI 검색 대응 */}
     <section>
-      <h2 className="text-2xl font-bold">AI 검색/요약 대응</h2>
+      <h2 id="ai-search" className="text-2xl font-bold">AI 검색/요약 대응</h2>
       <p className="mt-1 text-sm text-muted-foreground">AI 검색 엔진(Google SGE, ChatGPT 등)에 잘 인용되기 위한 콘텐츠 구조.</p>
       <div className="mt-4 space-y-3">
         {[
