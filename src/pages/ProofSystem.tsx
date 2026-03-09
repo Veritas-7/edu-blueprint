@@ -113,7 +113,7 @@ const ProofSystem = () => {
       )}
 
       <section>
-        <h2 className="text-2xl font-bold">증빙 요소 상세</h2>
+        <h2 id="proof-details" className="text-2xl font-bold">증빙 요소 상세</h2>
         <div className="mt-4 space-y-4">
           {proofElements.map((el) => (
             <Card key={el.name}>
