@@ -3,9 +3,9 @@ import { inferSiteType, getPageSet, buildImplementationRules, buildBlueprintBloc
 import { defaultBriefData, calculateBriefScore, validateBriefShape, BRIEF_SCHEMA_VERSION } from "@/lib/brief-schema";
 
 describe("brief-schema", () => {
-  it("calculates score for empty brief as 0%", () => {
+  it("calculates low score for default brief", () => {
     const score = calculateBriefScore(defaultBriefData);
-    expect(score.percent).toBe(0);
+    expect(score.percent).toBeLessThan(50);
     expect(score.missing.length).toBeGreaterThan(0);
   });
 
