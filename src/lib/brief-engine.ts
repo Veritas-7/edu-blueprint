@@ -301,7 +301,7 @@ export const buildImplementationRules = (brief: ClientBriefData) => {
 
   // Site focus types - refined
   const focusTypes: string[] = [];
-  if (brief.corePrograms.length > 20) focusTypes.push("과정 중심형");
+  if (brief.corePrograms.length > 30) focusTypes.push("과정 중심형");
   if (brief.hasTeacherProfile) focusTypes.push("강사진 중심형");
   if (brief.hasResults) focusTypes.push("성과 중심형");
   if (brief.branchType === "다지점") focusTypes.push("지점 중심형");
