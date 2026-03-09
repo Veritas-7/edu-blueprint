@@ -7,6 +7,12 @@ const IndustryOverview = () => (
     <PageHeader
       title="학원/교육 업종 특성"
       description="학원/교육 홈페이지가 일반 서비스업과 근본적으로 다른 이유와, 방문자별 기대 정보, 사이트 유형 분류, 전환 흐름을 정리합니다."
+      tocItems={[
+        { id: "industry-diff", label: "교육 홈페이지가 다른 이유" },
+        { id: "site-types", label: "사이트 유형 분류" },
+        { id: "fail-patterns", label: "자주 실패하는 패턴" },
+        { id: "conversion-flow", label: "대표 전환 흐름" },
+      ]}
       summaryCards={[
         { title: "핵심 차이", body: "교육 사이트는 '정보 확인 → 신뢰 판단 → 상담 전환'의 3단계 흐름이 핵심입니다." },
         { title: "핵심 방문자", body: "학부모(K-12), 학생 본인(고·대학생), 성인 학습자가 대표 유형입니다." },
