@@ -99,7 +99,7 @@ const IndustryOverview = () => (
 
     {/* 전환 흐름 */}
     <section>
-      <h2 className="text-2xl font-bold">대표 전환 흐름</h2>
+      <h2 id="conversion-flow" className="text-2xl font-bold">대표 전환 흐름</h2>
       <div className="mt-4 flex flex-wrap gap-2 items-center">
         {["검색 유입", "→", "첫 화면 대상 확인", "→", "과정 탐색", "→", "강사진/성과 확인", "→", "상담 CTA 클릭", "→", "방문 상담", "→", "등록"].map((step, i) => (
           <span key={i} className={step === "→" ? "text-accent font-bold" : "rounded-md bg-muted px-3 py-1.5 text-sm"}>
