@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   BRIEF_SCHEMA_VERSION,
   BriefEnvelope,
@@ -9,6 +9,12 @@ import {
 } from "@/lib/brief-schema";
 
 const STORAGE_KEY = "edu-guide-client-brief";
+const MAX_RETRY = 2;
+const RETRY_DELAY = 3000;
+
+export type SaveStatus = "idle" | "saving" | "saved" | "error";
+export type ImportErrorType = "invalid_json" | "invalid_shape" | "version_mismatch" | null;
+export type ImportResult = { success: boolean; errorType: ImportErrorType };
 
 export const exampleBriefData: ClientBriefData = {
   academyName: "예시 데이터 | 에듀브릿지 학습센터",
@@ -43,7 +49,12 @@ export const useClientBrief = () => {
   const [brief, setBrief] = useState<ClientBriefData>(defaultBriefData);
   const [lastSavedAt, setLastSavedAt] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [saveStatus, setSaveStatus] = useState<SaveStatus>("idle");
+  const [importError, setImportError] = useState<ImportErrorType>(null);
+  const retryCountRef = useRef(0);
+  const retryTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Load from localStorage
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -56,7 +67,7 @@ export const useClientBrief = () => {
       }
 
       if (parsed.schemaVersion !== BRIEF_SCHEMA_VERSION) {
-        setError(`스키마 버전이 다릅니다. 현재: ${BRIEF_SCHEMA_VERSION}, 저장본: ${parsed.schemaVersion}`);
+        setError(`스키마 버전이 다릅니다. 현재: ${BRIEF_SCHEMA_VERSION}, 저장본: ${parsed.schemaVersion}. 기본값으로 시작합니다.`);
         return;
       }
 
@@ -67,47 +78,79 @@ export const useClientBrief = () => {
     }
   }, []);
 
-  useEffect(() => {
+  // Autosave with retry
+  const trySave = (data: ClientBriefData) => {
     try {
-      const envelope = createEnvelope(brief);
+      setSaveStatus("saving");
+      const envelope = createEnvelope(data);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(envelope));
       setLastSavedAt(envelope.lastSavedAt);
+      setSaveStatus("saved");
       setError(null);
+      retryCountRef.current = 0;
     } catch {
+      setSaveStatus("error");
       setError("자동 저장에 실패했습니다.");
+      if (retryCountRef.current < MAX_RETRY) {
+        retryCountRef.current += 1;
+        retryTimerRef.current = setTimeout(() => trySave(data), RETRY_DELAY);
+      }
     }
+  };
+
+  useEffect(() => {
+    retryCountRef.current = 0;
+    trySave(brief);
+    return () => {
+      if (retryTimerRef.current) clearTimeout(retryTimerRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [brief]);
 
   const score = useMemo(() => calculateBriefScore(brief), [brief]);
 
   const updateField = <K extends keyof ClientBriefData>(key: K, value: ClientBriefData[K]) => {
     setBrief((prev) => ({ ...prev, [key]: value }));
+    setImportError(null);
   };
 
-  const reset = () => setBrief(defaultBriefData);
+  const reset = () => {
+    setBrief(defaultBriefData);
+    setImportError(null);
+  };
 
-  const fillExample = () => setBrief(exampleBriefData);
+  const fillExample = () => {
+    setBrief(exampleBriefData);
+    setImportError(null);
+  };
 
   const exportJson = () => JSON.stringify(createEnvelope(brief), null, 2);
 
-  const importJson = (jsonText: string) => {
+  const importJson = (jsonText: string): ImportResult => {
     try {
       const parsed = JSON.parse(jsonText) as unknown;
       if (!validateBriefShape(parsed)) {
-        setError("invalid shape: JSON 구조가 맞지 않습니다.");
-        return false;
+        const errType: ImportErrorType = "invalid_shape";
+        setImportError(errType);
+        setError("JSON 구조가 올바르지 않습니다. schemaVersion, lastSavedAt, data 필드를 확인하세요.");
+        return { success: false, errorType: errType };
       }
       if (parsed.schemaVersion !== BRIEF_SCHEMA_VERSION) {
-        setError(`version mismatch: ${parsed.schemaVersion} -> ${BRIEF_SCHEMA_VERSION} 필요`);
-        return false;
+        const errType: ImportErrorType = "version_mismatch";
+        setImportError(errType);
+        setError(`버전 불일치: ${parsed.schemaVersion} → ${BRIEF_SCHEMA_VERSION} 필요`);
+        return { success: false, errorType: errType };
       }
       setBrief({ ...defaultBriefData, ...parsed.data });
       setLastSavedAt(parsed.lastSavedAt);
       setError(null);
-      return true;
+      setImportError(null);
+      return { success: true, errorType: null };
     } catch {
-      setError("invalid JSON: JSON 파싱에 실패했습니다.");
-      return false;
+      const errType: ImportErrorType = "invalid_json";
+      setImportError(errType);
+      setError("JSON 파싱에 실패했습니다. 올바른 JSON 파일인지 확인하세요.");
+      return { success: false, errorType: errType };
     }
   };
 
@@ -121,6 +164,8 @@ export const useClientBrief = () => {
     lastSavedAt,
     score,
     error,
+    saveStatus,
+    importError,
     schemaVersion: BRIEF_SCHEMA_VERSION,
   };
 };

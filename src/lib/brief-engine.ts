@@ -26,6 +26,11 @@ export type ProofAssetStatus = {
   fallback: string;
 };
 
+export type ProofFallback = {
+  condition: string;
+  alternatives: string[];
+};
+
 export const inferSiteType = (brief: ClientBriefData): SiteType => {
   const isAdult = brief.educationSubtype === "성인어학" || brief.educationSubtype === "취업/직무" || brief.educationSubtype === "자격증";
   const hasStrongProof = brief.hasResults && brief.hasTeacherProfile && brief.hasReviews;
@@ -33,7 +38,7 @@ export const inferSiteType = (brief: ClientBriefData): SiteType => {
   if (isAdult) return "성인교육형";
   if (brief.branchType === "다지점") return "지점형";
   if (hasStrongProof) return "성과신뢰형";
-  if (brief.corePrograms.length > 30) return "과정탐색형";
+  if (brief.corePrograms.length > 20) return "과정탐색형";
   if (brief.consultingChannels.length >= 2) return "상담전환형";
   return "하이브리드형";
 };
@@ -43,7 +48,7 @@ export const getSiteTypeReason = (brief: ClientBriefData): string => {
   if (isAdult) return `교육 유형이 '${brief.educationSubtype}'이므로 성인교육형으로 판별`;
   if (brief.branchType === "다지점") return "다지점 운영이므로 지점형으로 판별";
   if (brief.hasResults && brief.hasTeacherProfile && brief.hasReviews) return "성과+강사진+후기 모두 보유하므로 성과신뢰형으로 판별";
-  if (brief.corePrograms.length > 30) return "핵심 프로그램 설명이 상세하므로 과정탐색형으로 판별";
+  if (brief.corePrograms.length > 20) return "핵심 프로그램 설명이 상세하므로 과정탐색형으로 판별";
   if (brief.consultingChannels.length >= 2) return `상담 채널 ${brief.consultingChannels.length}개 운영으로 상담전환형으로 판별`;
   return "기본 조건으로 하이브리드형으로 판별";
 };
@@ -60,6 +65,35 @@ export const getProofStatuses = (brief: ClientBriefData): ProofAssetStatus[] => 
   { name: "교재/자료/학습 시스템", status: "검토 필요", strength: "보조", placement: "과정 상세", fallback: "주차별 학습 목표 텍스트" },
   { name: "FAQ/정책 안내", status: "보유", strength: "보조", placement: "상담, 홈 하단", fallback: "기본 FAQ 템플릿 제공" },
 ];
+
+/** Proof 부족 시 대체 조합 로직 */
+export const getProofFallbacks = (statuses: ProofAssetStatus[]): ProofFallback[] => {
+  const fallbacks: ProofFallback[] = [];
+  const lacking = statuses.filter(s => s.status === "부족" || s.status === "비공개");
+
+  const hasTeacherLack = lacking.some(s => s.name === "강사진 경력");
+  const hasReviewLack = lacking.some(s => s.name === "수강 후기");
+  const hasResultLack = lacking.some(s => s.name === "성과/합격 사례");
+  const hasFacilityLack = lacking.some(s => s.name === "지점/시설/학습환경");
+
+  if (hasTeacherLack && hasReviewLack) {
+    fallbacks.push({ condition: "강사진 + 후기 모두 부족", alternatives: ["운영 프로세스 상세 설명", "FAQ 강화", "상담 프로세스 3단계 시각화"] });
+  }
+  if (hasResultLack) {
+    fallbacks.push({ condition: "성과/합격 사례 미보유", alternatives: ["학습 관리 프로세스 강조", "커리큘럼 구조 상세 제공", "수업 방식/교재 정보 제공"] });
+  }
+  if (hasFacilityLack) {
+    fallbacks.push({ condition: "시설 사진 미보유", alternatives: ["지도+주소+운영시간 텍스트 중심", "온라인 학습 환경 설명"] });
+  }
+  if (hasTeacherLack && !hasReviewLack) {
+    fallbacks.push({ condition: "강사진 정보 부족", alternatives: ["교육 철학/운영 방식 중심 대체", "수업 스타일 키워드 활용"] });
+  }
+  if (hasReviewLack && !hasTeacherLack) {
+    fallbacks.push({ condition: "수강 후기 부족", alternatives: ["FAQ + 상담 프로세스 상세", "체험수업 CTA 강화"] });
+  }
+
+  return fallbacks;
+};
 
 export const getPageSet = (siteType: SiteType) => {
   const requiredCommon = ["홈", "과정 목록", "과정 상세", "강사진", "상담/문의", "시간표/운영안내"];
@@ -147,13 +181,12 @@ export const buildBlueprintBlocks = (brief: ClientBriefData): BlueprintBlock[] =
       reviewClaim: "허위 경력/학위 절대 금지",
     },
     {
-      section: "상담/체험수업 페이지 구조",
+      section: "상담/문의 페이지 구조",
       required: ["신청 폼(최소 필드)", "응답 시간 안내", "개인정보 동의", "문의 채널 병렬 제공"],
       optional: ["상담 프로세스 3단계", "자주 묻는 질문"],
       conditional: [
         hasKakao ? "카카오 즉시 문의 버튼" : "전화/폼 우선",
         brief.consultingFeatures.includes("체험수업") ? "체험수업 신청 전용 섹션" : "일반 상담 폼만 제공",
-        brief.consultingFeatures.includes("설명회") ? "설명회 일정 캘린더" : "설명회 섹션 생략",
       ],
       forbidden: ["불필요한 긴 폼", "개인정보 동의 없는 폼"],
       coreCta: "상담 신청하기",
@@ -164,6 +197,24 @@ export const buildBlueprintBlocks = (brief: ClientBriefData): BlueprintBlock[] =
       fallback: "메신저 미운영 시 전화+폼 이중 채널 제공",
       bySubtype: isAdult ? "야간/주말 상담 가능 여부 상단 표기" : "학부모 전용 상담 안내 포함",
       reviewClaim: "응답 시간 과장 금지",
+    },
+    {
+      section: "설명회/체험수업 페이지 구조",
+      required: ["일정 안내(날짜/시간)", "참여 신청 폼", "진행 방식 설명"],
+      optional: ["이전 설명회 후기", "참여 혜택 안내", "온라인 참여 옵션"],
+      conditional: [
+        brief.consultingFeatures.includes("설명회") ? "설명회 일정 캘린더" : "설명회 섹션 생략",
+        brief.consultingFeatures.includes("체험수업") ? "체험수업 과목/시간 선택" : "체험수업 섹션 생략",
+      ],
+      forbidden: ["과장된 혜택 약속", "참여 강제 표현"],
+      coreCta: "설명회 예약",
+      subCta: "체험수업 신청",
+      proof: ["설명회/체험수업 진행 과정", "참여자 피드백"],
+      mobileRule: "일정+신청 버튼만 상단 노출",
+      seoPoint: "설명회/체험수업 키워드 + 지역 + 대상 조합",
+      fallback: "설명회 미운영 시 상담 페이지로 리다이렉트",
+      bySubtype: isAdult ? "직장인 대상 주말/야간 설명회 강조" : "학부모 동반 설명회 안내",
+      reviewClaim: "",
     },
     {
       section: "후기/성과 페이지 구조",
@@ -222,34 +273,64 @@ export const buildBlueprintBlocks = (brief: ClientBriefData): BlueprintBlock[] =
 export const buildImplementationRules = (brief: ClientBriefData) => {
   const siteType = inferSiteType(brief);
   const isAdult = siteType === "성인교육형";
-  const minSet = ["Hero", "핵심 과정", "강사진 요약", "상담 CTA", "연락처/위치"];
-  const standardSet = [...minSet, "과정 상세", "시간표", "FAQ", "후기 요약"];
-  const fullSet = [...standardSet, "성과/증빙", "지점 정보", "블로그", "설명회/체험수업", "커리큘럼 타임라인", "수강료 안내"];
+  const proofStatuses = getProofStatuses(brief);
 
-  // Site focus type
+  const minSet = [
+    { name: "Hero", reason: "첫 인상과 대상 적합성 전달" },
+    { name: "핵심 과정", reason: "핵심 서비스 전달" },
+    { name: "강사진 요약", reason: "전문성 신뢰 확보" },
+    { name: "상담 CTA", reason: "전환의 핵심 요소" },
+    { name: "연락처/위치", reason: "접근성 보장" },
+  ];
+  const standardSet = [
+    ...minSet,
+    { name: "과정 상세", reason: "탐색-전환 연결" },
+    { name: "시간표", reason: "운영 정보 제공" },
+    { name: "FAQ", reason: "의사결정 지원" },
+    { name: "후기 요약", reason: "사회적 증거" },
+  ];
+  const fullSet = [
+    ...standardSet,
+    { name: "성과/증빙", reason: "강한 신뢰 요소" },
+    { name: "지점 정보", reason: "다지점 접근성" },
+    { name: "블로그", reason: "SEO/전문성" },
+    { name: "설명회/체험수업", reason: "저관여 진입점" },
+    { name: "커리큘럼 타임라인", reason: "학습 구조 전달" },
+    { name: "수강료 안내", reason: "가격 투명성" },
+  ];
+
+  // Site focus types - refined
   const focusTypes: string[] = [];
-  if (brief.corePrograms.length > 30) focusTypes.push("과정 중심형");
+  if (brief.corePrograms.length > 20) focusTypes.push("과정 중심형");
   if (brief.hasTeacherProfile) focusTypes.push("강사진 중심형");
   if (brief.hasResults) focusTypes.push("성과 중심형");
   if (brief.branchType === "다지점") focusTypes.push("지점 중심형");
   if (isAdult) focusTypes.push("성인교육형");
+  if (brief.consultingFeatures.length >= 2) focusTypes.push("상담 강화형");
+  if (brief.hasReviews && brief.hasResults) focusTypes.push("증빙 풍부형");
   if (focusTypes.length === 0) focusTypes.push("일반 균형형");
+
+  // Proof-aware asset rules
+  const assetRules = proofStatuses.filter(s => s.strength === "강함").map(ps => {
+    if (ps.status === "보유") return `✅ ${ps.name} 유지 — ${ps.placement}에 배치`;
+    if (ps.status === "비공개") return `🔒 ${ps.name} 비공개 — ${ps.fallback}`;
+    return `⚠️ ${ps.name} 부족 — ${ps.fallback}`;
+  });
+
+  const proofFallbacks = getProofFallbacks(proofStatuses);
 
   return {
     siteType,
     focusTypes,
+    proofStatuses,
+    proofFallbacks,
     branchRule: brief.branchType === "다지점"
       ? "지점별 랜딩 + 공통 과정 허브 구성. 각 지점 페이지에 고유 연락처/운영시간/지도 포함"
       : "단일 지점 기준 연락처/지도 고정. 모든 페이지 하단에 위치 정보 노출",
     audienceRule: isAdult
       ? "성인형 문체/야간·주말 운영/실무 결과 중심. '학부모' 관련 문구 제거"
       : "학부모+학생 동시 이해형 문체/학습 관리 프로세스 강조. 학년별 대상 태그 필수",
-    assetRules: [
-      brief.hasResults ? "✅ 성과 블록 유지 — 홈+성과 페이지에 근거/출처 포함하여 배치" : "⚠️ 성과 블록 축소 — 과정 구조/강사진 증빙으로 신뢰 확보",
-      brief.hasTeacherProfile ? "✅ 강사진 상세 노출 — 경력 검증 후 과목별 프로필 카드 제공" : "⚠️ 강사진 철학/운영 방식 중심 대체 — 경력 미확보 시 수업 방식 강조",
-      brief.hasReviews ? "✅ 후기 섹션 유지 — 과정/기간 표기, 수강생 동의 확인" : "⚠️ FAQ + 상담 프로세스 상세로 대체 — 후기 미확보 시 대체 신뢰 요소",
-      brief.hasFacilityAssets ? "✅ 시설 사진 활용 — 실제 사진 기준, 과도한 보정 금지" : "⚠️ 시설 사진 미확보 — 주소+지도+운영시간 텍스트 중심",
-    ],
+    assetRules,
     channelRule: brief.consultingChannels.includes("카카오")
       ? "모바일 고정바에 카카오 포함 (전화 + 카카오 + 상담신청)"
       : brief.consultingChannels.includes("전화")
@@ -284,6 +365,7 @@ export const buildImplementationRules = (brief: ClientBriefData) => {
       isAdult ? "야간/주말 운영 정보를 히어로 영역에 명시" : "학년별 과정 진입점을 히어로 하단에 배치",
       brief.branchType === "다지점" ? "지점 선택 UI를 홈 상단에 배치" : "단일 지점 주소/전화를 헤더에 고정",
       brief.tuitionPublic !== "공개" ? "수강료 비공개 시 '개별 상담 안내' 사유 UX 제공" : "수강료 테이블을 과정 상세에 포함",
+      ...proofFallbacks.map(f => `⚠️ ${f.condition}: ${f.alternatives[0]}`),
     ],
   };
 };
@@ -292,12 +374,15 @@ export const buildLovablePrompt = (brief: ClientBriefData): string => {
   const siteType = inferSiteType(brief);
   const pageSet = getPageSet(siteType);
   const mainCta = brief.ctaPriority[0] || "상담 신청하기";
+  const proofStatuses = getProofStatuses(brief);
+  const lackingProofs = proofStatuses.filter(s => s.status !== "보유");
 
   return `아래 조건으로 ${brief.educationSubtype} 교육 사이트를 만들어 주세요.
 
 [기본 정보]
 - 학원명: ${brief.academyName || "(미입력)"}
 - 유형: ${brief.educationSubtype} / ${brief.operationType}
+- 사이트 유형: ${siteType}
 - 대상: ${brief.targetAges.join(", ") || "(미입력)"}
 - 지역: ${brief.region || "(미입력)"}
 - 지점: ${brief.branchType}
@@ -305,9 +390,13 @@ export const buildLovablePrompt = (brief: ClientBriefData): string => {
 [필수 페이지]
 ${pageSet.required.map(p => `- ${p}`).join("\n")}
 
+[선택 페이지]
+${pageSet.optional.map(p => `- ${p}`).join("\n")}
+
 [핵심 CTA]
 - 1차: ${mainCta}
 - 2차: ${brief.ctaPriority[1] || "과정 보기"}
+- 모바일 하단 고정: ${brief.consultingChannels.slice(0, 4).join(", ")}
 
 [디자인 방향]
 - 톤: ${brief.brandTone || "신뢰형, 구조적"}
@@ -318,14 +407,16 @@ ${pageSet.required.map(p => `- ${p}`).join("\n")}
 - 성과/합격 사례: ${brief.hasResults ? "보유" : "미보유"}
 - 수강 후기: ${brief.hasReviews ? "보유" : "미보유"}
 - 시설 사진: ${brief.hasFacilityAssets ? "보유" : "미보유"}
+${lackingProofs.length > 0 ? `\n[부족 자산 대체안]\n${lackingProofs.map(p => `- ${p.name}: ${p.fallback}`).join("\n")}` : ""}
 
 [모바일]
 - 하단 고정 CTA: ${brief.consultingChannels.slice(0, 4).join(", ")}
 - 전화/카카오 원터치 실행
+- 첫 화면에 CTA 1개 + 보조 CTA 1개만 노출
 
 [SEO]
 - 메타 타이틀: ${brief.region} ${brief.educationSubtype} ${brief.academyName}
-- JSON-LD: EducationalOrganization, Course, LocalBusiness`;
+- JSON-LD: EducationalOrganization, Course, LocalBusiness, BreadcrumbList`;
 };
 
 export const buildMetaSuggestions = (brief: ClientBriefData) => {
@@ -338,5 +429,39 @@ export const buildMetaSuggestions = (brief: ClientBriefData) => {
     programs: { title: `과정 안내 | ${name}`, description: `${name}의 전체 과정 목록. ${brief.targetAges.join("/")} 대상 ${subtype} 프로그램을 확인하세요.` },
     teachers: { title: `강사진 소개 | ${name}`, description: `${name} 강사진의 경력과 교육 철학을 확인하세요.` },
     contact: { title: `상담 신청 | ${name}`, description: `${name}에 상담을 신청하세요. ${brief.consultingChannels.join(", ")} 가능.` },
+    results: { title: `성과/합격사례 | ${name}`, description: `${name}의 학습 성과와 합격 사례를 확인하세요.` },
+    reviews: { title: `수강 후기 | ${name}`, description: `${name} 수강생들의 실제 후기를 확인하세요.` },
+    campus: { title: `지점/캠퍼스 안내 | ${name}`, description: `${name}의 위치, 시설, 운영시간을 확인하세요.` },
   };
+};
+
+/** Serialize a blueprint block to copyable text */
+export const serializeBlueprintBlock = (block: BlueprintBlock): string => {
+  const lines: string[] = [
+    `## ${block.section}`,
+    "",
+    `### 필수 블록`,
+    ...block.required.map(b => `- ${b}`),
+    "",
+    `### 선택 블록`,
+    ...block.optional.map(b => `- ${b}`),
+  ];
+  if (block.conditional.length > 0) {
+    lines.push("", `### 조건부 블록`, ...block.conditional.map(b => `- ${b}`));
+  }
+  if (block.forbidden.length > 0) {
+    lines.push("", `### 금지 블록`, ...block.forbidden.map(b => `- ${b}`));
+  }
+  lines.push(
+    "",
+    `핵심 CTA: ${block.coreCta}`,
+    `보조 CTA: ${block.subCta}`,
+    `Proof: ${block.proof.join(", ")}`,
+    `모바일: ${block.mobileRule}`,
+    `SEO: ${block.seoPoint}`,
+    `대체안: ${block.fallback}`,
+  );
+  if (block.bySubtype) lines.push(`유형별: ${block.bySubtype}`);
+  if (block.reviewClaim) lines.push(`검토: ${block.reviewClaim}`);
+  return lines.join("\n");
 };

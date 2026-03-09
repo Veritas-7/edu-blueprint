@@ -8,6 +8,7 @@ import {
   buildWebSiteJsonLd,
   buildEducationalOrgJsonLd,
   buildWebPageJsonLd,
+  buildFaqPageJsonLd,
 } from "@/data/seo-config";
 
 type SeoInput = {
@@ -44,12 +45,14 @@ const removeJsonLd = (id: string) => {
   document.getElementById(id)?.remove();
 };
 
+const ALL_JSONLD_IDS = ["jsonld-breadcrumb", "jsonld-webpage", "jsonld-website", "jsonld-eduorg", "jsonld-faqpage"];
+
 export const useSeo = ({ title, description, path, noindex }: SeoInput) => {
   useEffect(() => {
     const config = seoConfig[path] || notFoundSeo;
     const resolvedRobots = noindex ? "noindex,nofollow" : config.robots;
     const ogImage = `${SITE_URL}${config.ogImage || OG_IMAGE}`;
-    const ogUrl = `${SITE_URL}${path}`;
+    const ogUrl = `${SITE_URL}${path === "*" ? "" : path}`;
 
     document.title = title;
 
@@ -72,44 +75,55 @@ export const useSeo = ({ title, description, path, noindex }: SeoInput) => {
     upsertMeta('meta[name="twitter:image"]', { name: "twitter:image", content: ogImage });
 
     // Canonical
-    const canonicalHref = ogUrl;
     let canonical = document.head.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
     if (!canonical) {
       canonical = document.createElement("link");
       canonical.rel = "canonical";
       document.head.appendChild(canonical);
     }
-    canonical.href = canonicalHref;
+    canonical.href = ogUrl;
 
-    // JSON-LD: BreadcrumbList
-    if (path !== "*") {
+    // --- JSON-LD: driven by jsonLdType array ---
+    const types = config.jsonLdType || [];
+
+    // BreadcrumbList
+    if (types.includes("BreadcrumbList") && path !== "*") {
       upsertJsonLd("jsonld-breadcrumb", buildBreadcrumbJsonLd(path));
     } else {
       removeJsonLd("jsonld-breadcrumb");
     }
 
-    // JSON-LD: WebPage
-    const pageJsonLd = buildWebPageJsonLd(path);
-    if (pageJsonLd) {
-      upsertJsonLd("jsonld-webpage", pageJsonLd);
+    // WebPage
+    if (types.includes("WebPage")) {
+      const pageJsonLd = buildWebPageJsonLd(path);
+      if (pageJsonLd) upsertJsonLd("jsonld-webpage", pageJsonLd);
     } else {
       removeJsonLd("jsonld-webpage");
     }
 
-    // JSON-LD: WebSite + EducationalOrg (homepage only)
-    if (path === "/") {
+    // WebSite (homepage)
+    if (types.includes("WebSite")) {
       upsertJsonLd("jsonld-website", buildWebSiteJsonLd());
-      upsertJsonLd("jsonld-eduorg", buildEducationalOrgJsonLd());
     } else {
       removeJsonLd("jsonld-website");
+    }
+
+    // EducationalOrganization (homepage)
+    if (types.includes("EducationalOrganization")) {
+      upsertJsonLd("jsonld-eduorg", buildEducationalOrgJsonLd());
+    } else {
       removeJsonLd("jsonld-eduorg");
+    }
+
+    // FAQPage
+    if (types.includes("FAQPage") && config.faqItems && config.faqItems.length > 0) {
+      upsertJsonLd("jsonld-faqpage", buildFaqPageJsonLd(config.faqItems));
+    } else {
+      removeJsonLd("jsonld-faqpage");
     }
 
     return () => {
-      removeJsonLd("jsonld-breadcrumb");
-      removeJsonLd("jsonld-webpage");
-      removeJsonLd("jsonld-website");
-      removeJsonLd("jsonld-eduorg");
+      ALL_JSONLD_IDS.forEach(removeJsonLd);
     };
   }, [title, description, path, noindex]);
 };

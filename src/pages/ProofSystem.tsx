@@ -1,5 +1,5 @@
 import { useClientBrief } from "@/hooks/use-client-brief";
-import { getProofStatuses } from "@/lib/brief-engine";
+import { getProofStatuses, getProofFallbacks } from "@/lib/brief-engine";
 import { PageHeader } from "@/components/docs/PageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BadgeTag } from "@/components/docs/BadgeTag";
@@ -52,6 +52,7 @@ const statusColorMap: Record<string, string> = {
 const ProofSystem = () => {
   const { brief, score } = useClientBrief();
   const proofStatuses = getProofStatuses(brief);
+  const proofFallbacks = getProofFallbacks(proofStatuses);
   const hasBrief = score.percent >= 30;
 
   return (
@@ -88,6 +89,18 @@ const ProofSystem = () => {
               </div>
             ))}
           </div>
+
+          {proofFallbacks.length > 0 && (
+            <div className="mt-4 space-y-2">
+              <h3 className="text-base font-semibold">대체 조합 제안</h3>
+              {proofFallbacks.map((fb, i) => (
+                <div key={i} className="rounded-md border border-info/30 bg-info/5 p-3 text-sm">
+                  <p className="font-medium">{fb.condition}</p>
+                  <ul className="mt-1 text-xs text-muted-foreground">{fb.alternatives.map(a => <li key={a}>→ {a}</li>)}</ul>
+                </div>
+              ))}
+            </div>
+          )}
         </section>
       )}
 

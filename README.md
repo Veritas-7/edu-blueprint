@@ -8,6 +8,17 @@
 - 고객사 정보를 입력하면 **공개용 사이트 구조와 제작 규칙을 자동 생성**
 - 디자이너·기획자·개발자가 함께 참고할 수 있는 **내부 기준서**
 
+## 워크플로우
+
+```
+브리프 입력 → 사이트유형 판별 → 청사진 생성 → 구현 규칙 도출 → 공개용 산출물 복사
+```
+
+1. **Client Brief** (`/client-brief`): 고객사 정보 입력, 자동 저장, JSON 내보내기/불러오기
+2. **Site Blueprint** (`/site-blueprint`): 브리프 기반으로 페이지 구조, CTA, proof 배치, 메타/SEO 자동 생성
+3. **Implementation Rules** (`/implementation-rules`): 예산별 구성, 분기 규칙, 즉시 제작 지침 도출
+4. **Proof System** (`/proof-system`): 10가지 증빙 요소의 보유/부족/대체 상태 관리
+
 ## 포괄 대상
 
 초중고 보습학원, 입시학원, 영어학원, 수학학원, 어학원, 성인 어학/회화, 자격증, 취업/직무, 코딩/디지털, 예체능, 교습소/공부방, 단일/다지점 학원
@@ -23,7 +34,7 @@
 | `/ux-guide` | 사용자 여정 및 전환 UX 가이드 |
 | `/page-templates` | 11종 페이지 템플릿 모음 |
 | `/content-guide` | 카피·CTA·금지 표현 가이드 |
-| `/proof-system` | 신뢰/성과 증빙 운영 기준 |
+| `/proof-system` | 신뢰/성과 증빙 운영 기준 (브리프 연동) |
 | `/seo-geo` | SEO/GEO 검색 유입 전략 |
 | `/checklist` | 9개 카테고리 실무 체크리스트 |
 | `/client-brief` | 고객사 브리프 수집/저장 도구 |
@@ -37,11 +48,17 @@
 - **Tailwind CSS** + **shadcn/ui**
 - **Vitest** (테스트)
 
-## 실행
+## 설치 및 실행
 
 ```bash
 npm install
 npm run dev
+```
+
+## 빌드
+
+```bash
+npm run build
 ```
 
 ## 테스트
@@ -56,3 +73,9 @@ npm test
 - 모바일 우선 · 지역 기반 최적화
 - 과장 없는 성과 커뮤니케이션
 - 재사용 가능한 시스템화
+- Proof 기반 자산 상태 관리 (보유/부족/비공개/검토 필요)
+
+## 패키지 관리
+
+- 기본 패키지 매니저: bun (bun.lockb)
+- npm install / npm ci도 호환됨

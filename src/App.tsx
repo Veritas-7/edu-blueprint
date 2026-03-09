@@ -41,7 +41,7 @@ const App = () => (
           <Route element={<GuideLayout><ClientBrief /></GuideLayout>} path="/client-brief" />
           <Route element={<GuideLayout><SiteBlueprint /></GuideLayout>} path="/site-blueprint" />
           <Route element={<GuideLayout><ImplementationRules /></GuideLayout>} path="/implementation-rules" />
-          <Route path="*" element={<NotFound />} />
+          <Route path="*" element={<GuideLayout><NotFound /></GuideLayout>} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

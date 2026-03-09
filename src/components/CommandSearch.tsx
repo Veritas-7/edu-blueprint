@@ -9,7 +9,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { Search } from "lucide-react";
+import { Search, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const searchKeywords: Record<string, string[]> = {
@@ -66,7 +66,14 @@ export const CommandSearch = () => {
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput placeholder="페이지 검색... (예: 디자인, SEO, 브리프)" />
         <CommandList>
-          <CommandEmpty>검색 결과가 없습니다.</CommandEmpty>
+          <CommandEmpty>
+            <div className="flex flex-col items-center gap-2 py-4">
+              <p className="text-sm text-muted-foreground">검색 결과가 없습니다.</p>
+              <Button variant="outline" size="sm" onClick={() => handleSelect("/")}>
+                <Home className="h-4 w-4 mr-1" /> 가이드 홈으로 이동
+              </Button>
+            </div>
+          </CommandEmpty>
           <CommandGroup heading="가이드 페이지">
             {guideNavItems.map(item => (
               <CommandItem
@@ -74,8 +81,10 @@ export const CommandSearch = () => {
                 value={`${item.label} ${item.description} ${(searchKeywords[item.path] || []).join(" ")}`}
                 onSelect={() => handleSelect(item.path)}
               >
-                <span className="font-medium">{item.label}</span>
-                <span className="ml-2 text-xs text-muted-foreground">{item.description}</span>
+                <div className="flex flex-col">
+                  <span className="font-medium">{item.label}</span>
+                  <span className="text-xs text-muted-foreground">{item.description}</span>
+                </div>
               </CommandItem>
             ))}
           </CommandGroup>

@@ -1,19 +1,11 @@
 import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
-import { useSeo } from "@/hooks/use-seo";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Home, FileText, ClipboardCheck, Layers } from "lucide-react";
 
 const NotFound = () => {
   const location = useLocation();
-
-  useSeo({
-    title: "페이지를 찾을 수 없습니다 | 학원/교육 웹 제작 시스템",
-    description: "요청하신 페이지가 존재하지 않습니다.",
-    path: "*",
-    noindex: true,
-  });
 
   useEffect(() => {
     console.error("404 Error: User attempted to access non-existent route:", location.pathname);
@@ -27,7 +19,7 @@ const NotFound = () => {
   ];
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-[60vh] items-center justify-center px-4">
       <div className="w-full max-w-lg text-center space-y-6">
         <div className="space-y-2">
           <h1 className="text-6xl font-bold text-primary">404</h1>
