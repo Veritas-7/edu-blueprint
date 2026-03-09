@@ -446,7 +446,7 @@ const PageTemplates = () => (
 
     <Accordion type="multiple" className="space-y-4">
       {templates.map((t, idx) => (
-        <AccordionItem key={t.slug} value={t.slug} className="rounded-lg border bg-card">
+        <AccordionItem key={t.slug} value={t.slug} id={`template-${t.slug}`} className="rounded-lg border bg-card">
           <AccordionTrigger className="px-4 py-3 hover:no-underline">
             <div className="flex items-center gap-3 text-left">
               <span className="flex h-7 w-7 items-center justify-center rounded-md bg-primary text-xs font-bold text-primary-foreground">{idx + 1}</span>
