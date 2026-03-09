@@ -89,7 +89,7 @@ const Index = () => {
             <Link key={item.step} to={item.path} className="group">
               <Card className="h-full transition-colors hover:border-accent">
                 <CardHeader>
-                  <Badge className="mb-2 w-fit bg-accent text-accent-foreground">Step {item.step}</Badge>
+                  <span className="mb-2 inline-flex w-fit items-center rounded-full bg-accent px-2.5 py-0.5 text-xs font-semibold text-accent-foreground">Step {item.step}</span>
                   <CardTitle className="text-base">{item.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="text-sm text-muted-foreground">{item.desc}</CardContent>

@@ -237,7 +237,6 @@ describe("navigation & seo", () => {
     expect(faqJsonLd["@type"]).toBe("FAQPage");
     expect(faqJsonLd.mainEntity[0]["@type"]).toBe("Question");
   });
-  });
 
   it("all seoConfig entries have jsonLdType array", async () => {
     const { seoConfig } = await import("@/data/seo-config");
@@ -253,3 +252,4 @@ describe("navigation & seo", () => {
       expect(seoConfig[route].robots).toBe("noindex,follow");
     }
   });
+});
