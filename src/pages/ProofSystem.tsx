@@ -140,7 +140,7 @@ const ProofSystem = () => {
       </section>
 
       <section>
-        <h2 className="text-2xl font-bold">증빙 강도 비교</h2>
+        <h2 id="proof-comparison" className="text-2xl font-bold">증빙 강도 비교</h2>
         <div className="mt-4 overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
