@@ -38,7 +38,7 @@ export const inferSiteType = (brief: ClientBriefData): SiteType => {
   if (isAdult) return "성인교육형";
   if (brief.branchType === "다지점") return "지점형";
   if (hasStrongProof) return "성과신뢰형";
-  if (brief.corePrograms.length > 20) return "과정탐색형";
+  if (brief.corePrograms.length > 30) return "과정탐색형";
   if (brief.consultingChannels.length >= 2) return "상담전환형";
   return "하이브리드형";
 };
