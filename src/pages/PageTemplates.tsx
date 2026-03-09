@@ -429,6 +429,7 @@ const PageTemplates = () => (
     <PageHeader
       title="페이지 템플릿"
       description="실제 고객사 사이트 제작에 바로 재사용할 수 있는 11개 페이지별 섹션 구조, 와이어프레임, CTA, 증빙 요소, 모바일 축약 규칙, SEO 포인트를 제공합니다."
+      tocItems={templates.map((t) => ({ id: `template-${t.slug}`, label: t.name }))}
       summaryCards={[
         { title: "총 11개 템플릿", body: "홈, 과정 목록, 과정 상세, 강사진, 지점, 성과, 후기, 시간표, 상담, 설명회, 블로그" },
         { title: "재사용 목표", body: "섹션 순서·CTA·proof를 복사해 빠르게 와이어프레임 구성" },
