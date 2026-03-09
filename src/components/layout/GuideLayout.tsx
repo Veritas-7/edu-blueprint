@@ -54,7 +54,7 @@ const AppSidebar = () => {
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
-          <SidebarGroup defaultOpen>
+          <SidebarGroup>
             <SidebarGroupLabel>도구</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
