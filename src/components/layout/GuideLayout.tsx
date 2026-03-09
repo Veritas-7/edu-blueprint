@@ -1,10 +1,11 @@
 import { ReactNode } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { NavLink } from "@/components/NavLink";
-import { guideNavItems, getPrevNext, routeMeta } from "@/lib/navigation";
+import { guideNavItems, getPrevNext } from "@/lib/navigation";
+import { seoConfig, notFoundSeo } from "@/data/seo-config";
 import { useSeo } from "@/hooks/use-seo";
-import { ChevronLeft, ChevronRight, BookOpen, Menu } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight, BookOpen } from "lucide-react";
+import { CommandSearch } from "@/components/CommandSearch";
 import {
   Sidebar,
   SidebarContent,
@@ -79,10 +80,15 @@ const AppSidebar = () => {
 
 export const GuideLayout = ({ children }: { children: ReactNode }) => {
   const location = useLocation();
-  const meta = routeMeta[location.pathname] || routeMeta["/"];
+  const config = seoConfig[location.pathname] || notFoundSeo;
   const { prev, next } = getPrevNext(location.pathname);
 
-  useSeo({ title: meta.title, description: meta.description, path: location.pathname, noindex: location.pathname === "*" });
+  useSeo({
+    title: config.title,
+    description: config.description,
+    path: location.pathname,
+    noindex: config.robots.includes("noindex"),
+  });
 
   return (
     <SidebarProvider>
@@ -91,7 +97,7 @@ export const GuideLayout = ({ children }: { children: ReactNode }) => {
         <div className="flex-1 flex flex-col min-w-0">
           <header className="sticky top-0 z-30 flex h-14 items-center border-b bg-background/95 backdrop-blur px-4 gap-4">
             <SidebarTrigger />
-            <nav className="hidden lg:flex gap-1 overflow-x-auto">
+            <nav className="hidden lg:flex gap-1 overflow-x-auto flex-1">
               {guideNavItems.map((item) => (
                 <NavLink
                   key={item.path}
@@ -104,6 +110,7 @@ export const GuideLayout = ({ children }: { children: ReactNode }) => {
                 </NavLink>
               ))}
             </nav>
+            <CommandSearch />
           </header>
 
           <main className="flex-1 overflow-y-auto">

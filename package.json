@@ -1,7 +1,8 @@
 {
-  "name": "vite_react_shadcn_ts",
+  "name": "edu-guide-system",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "학원/교육 업종 웹 제작 시스템 — 내부 가이드, 브리프 도구, 사이트 청사진 생성기",
   "type": "module",
   "scripts": {
     "dev": "vite",
