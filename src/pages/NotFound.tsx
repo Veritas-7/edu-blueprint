@@ -1,21 +1,57 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
+import { useSeo } from "@/hooks/use-seo";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Home, FileText, ClipboardCheck, Layers } from "lucide-react";
 
 const NotFound = () => {
   const location = useLocation();
+
+  useSeo({
+    title: "페이지를 찾을 수 없습니다 | 학원/교육 웹 제작 시스템",
+    description: "요청하신 페이지가 존재하지 않습니다.",
+    path: "*",
+    noindex: true,
+  });
 
   useEffect(() => {
     console.error("404 Error: User attempted to access non-existent route:", location.pathname);
   }, [location.pathname]);
 
+  const quickLinks = [
+    { label: "가이드 홈", path: "/", icon: Home },
+    { label: "Client Brief", path: "/client-brief", icon: FileText },
+    { label: "Site Blueprint", path: "/site-blueprint", icon: Layers },
+    { label: "Checklist", path: "/checklist", icon: ClipboardCheck },
+  ];
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">404</h1>
-        <p className="mb-4 text-xl text-muted-foreground">Oops! Page not found</p>
-        <a href="/" className="text-primary underline hover:text-primary/90">
-          Return to Home
-        </a>
+    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+      <div className="w-full max-w-lg text-center space-y-6">
+        <div className="space-y-2">
+          <h1 className="text-6xl font-bold text-primary">404</h1>
+          <p className="text-xl text-muted-foreground">요청하신 페이지를 찾을 수 없습니다</p>
+          <p className="text-sm text-muted-foreground">
+            <code className="rounded bg-muted px-2 py-0.5">{location.pathname}</code> 경로가 존재하지 않습니다.
+          </p>
+        </div>
+
+        <Card>
+          <CardContent className="p-6">
+            <p className="mb-4 text-sm font-medium">아래 페이지로 이동해 보세요:</p>
+            <div className="grid grid-cols-2 gap-3">
+              {quickLinks.map(link => (
+                <Button key={link.path} asChild variant="outline" className="h-auto flex-col gap-1 py-3">
+                  <Link to={link.path}>
+                    <link.icon className="h-5 w-5 text-accent" />
+                    <span className="text-sm">{link.label}</span>
+                  </Link>
+                </Button>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

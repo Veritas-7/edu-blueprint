@@ -1,73 +1,58 @@
-# Welcome to your Lovable project
+# 학원/교육 업종 웹 제작 시스템
 
-## Project info
+학원·교육 업종 홈페이지를 빠르게 제작하기 위한 **내부용 가이드 사이트 + 고객사 브리프 도구 + 공개용 사이트 청사진 생성 시스템**입니다.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## 목적
 
-## How can I edit this code?
+- 다양한 교육 고객사 프로젝트에 **재사용 가능한 제작 기준서**를 제공
+- 고객사 정보를 입력하면 **공개용 사이트 구조와 제작 규칙을 자동 생성**
+- 디자이너·기획자·개발자가 함께 참고할 수 있는 **내부 기준서**
 
-There are several ways of editing your application.
+## 포괄 대상
 
-**Use Lovable**
+초중고 보습학원, 입시학원, 영어학원, 수학학원, 어학원, 성인 어학/회화, 자격증, 취업/직무, 코딩/디지털, 예체능, 교습소/공부방, 단일/다지점 학원
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## 주요 기능
 
-Changes made via Lovable will be committed automatically to this repo.
+| 페이지 | 설명 |
+|---|---|
+| `/` | 시스템 개요 대시보드 |
+| `/industry-overview` | 학원/교육 업종 특성 분석 |
+| `/design-guide` | 컬러·타이포·이미지 디자인 시스템 |
+| `/ui-guide` | UI 컴포넌트 패턴 사전 |
+| `/ux-guide` | 사용자 여정 및 전환 UX 가이드 |
+| `/page-templates` | 11종 페이지 템플릿 모음 |
+| `/content-guide` | 카피·CTA·금지 표현 가이드 |
+| `/proof-system` | 신뢰/성과 증빙 운영 기준 |
+| `/seo-geo` | SEO/GEO 검색 유입 전략 |
+| `/checklist` | 9개 카테고리 실무 체크리스트 |
+| `/client-brief` | 고객사 브리프 수집/저장 도구 |
+| `/site-blueprint` | 브리프 기반 사이트 청사진 생성기 |
+| `/implementation-rules` | 브리프 기반 제작 규칙 엔진 |
 
-**Use your preferred IDE**
+## 기술 스택
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- **React 18** + **TypeScript**
+- **Vite** (빌드)
+- **Tailwind CSS** + **shadcn/ui**
+- **Vitest** (테스트)
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## 실행
 
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```bash
+npm install
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## 테스트
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+npm test
+```
 
-**Use GitHub Codespaces**
+## 핵심 방향
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+- 신뢰 형성 · 대상 적합성 전달 · 상담 전환 강화
+- 모바일 우선 · 지역 기반 최적화
+- 과장 없는 성과 커뮤니케이션
+- 재사용 가능한 시스템화
