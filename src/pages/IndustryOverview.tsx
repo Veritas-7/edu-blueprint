@@ -78,7 +78,7 @@ const IndustryOverview = () => (
 
     {/* 자주 실패하는 패턴 */}
     <section>
-      <h2 className="text-2xl font-bold">교육 사이트에서 자주 실패하는 패턴</h2>
+      <h2 id="fail-patterns" className="text-2xl font-bold">교육 사이트에서 자주 실패하는 패턴</h2>
       <div className="mt-4 space-y-3">
         {[
           "어떤 대상에게 맞는지 첫 화면에서 불명확함",
