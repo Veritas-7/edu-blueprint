@@ -7,6 +7,12 @@ const IndustryOverview = () => (
     <PageHeader
       title="학원/교육 업종 특성"
       description="학원/교육 홈페이지가 일반 서비스업과 근본적으로 다른 이유와, 방문자별 기대 정보, 사이트 유형 분류, 전환 흐름을 정리합니다."
+      tocItems={[
+        { id: "industry-diff", label: "교육 홈페이지가 다른 이유" },
+        { id: "site-types", label: "사이트 유형 분류" },
+        { id: "fail-patterns", label: "자주 실패하는 패턴" },
+        { id: "conversion-flow", label: "대표 전환 흐름" },
+      ]}
       summaryCards={[
         { title: "핵심 차이", body: "교육 사이트는 '정보 확인 → 신뢰 판단 → 상담 전환'의 3단계 흐름이 핵심입니다." },
         { title: "핵심 방문자", body: "학부모(K-12), 학생 본인(고·대학생), 성인 학습자가 대표 유형입니다." },
@@ -22,7 +28,7 @@ const IndustryOverview = () => (
 
     {/* 일반 서비스업과의 차이 */}
     <section>
-      <h2 className="text-2xl font-bold">교육 홈페이지가 다른 이유</h2>
+      <h2 id="industry-diff" className="text-2xl font-bold">교육 홈페이지가 다른 이유</h2>
       <div className="mt-4 grid gap-4 md:grid-cols-2">
         {[
           { title: "신뢰 우선", body: "제품 판매와 달리 '내 아이/나에게 맞는지'를 판단해야 하므로 강사진·운영·성과 증빙이 핵심입니다." },
@@ -40,7 +46,7 @@ const IndustryOverview = () => (
 
     {/* 사이트 유형 분류 */}
     <section>
-      <h2 className="text-2xl font-bold">사이트 유형 분류</h2>
+      <h2 id="site-types" className="text-2xl font-bold">사이트 유형 분류</h2>
       <div className="mt-4 overflow-x-auto">
         <table className="w-full text-sm">
           <thead className="border-b bg-muted">
@@ -72,7 +78,7 @@ const IndustryOverview = () => (
 
     {/* 자주 실패하는 패턴 */}
     <section>
-      <h2 className="text-2xl font-bold">교육 사이트에서 자주 실패하는 패턴</h2>
+      <h2 id="fail-patterns" className="text-2xl font-bold">교육 사이트에서 자주 실패하는 패턴</h2>
       <div className="mt-4 space-y-3">
         {[
           "어떤 대상에게 맞는지 첫 화면에서 불명확함",
@@ -93,7 +99,7 @@ const IndustryOverview = () => (
 
     {/* 전환 흐름 */}
     <section>
-      <h2 className="text-2xl font-bold">대표 전환 흐름</h2>
+      <h2 id="conversion-flow" className="text-2xl font-bold">대표 전환 흐름</h2>
       <div className="mt-4 flex flex-wrap gap-2 items-center">
         {["검색 유입", "→", "첫 화면 대상 확인", "→", "과정 탐색", "→", "강사진/성과 확인", "→", "상담 CTA 클릭", "→", "방문 상담", "→", "등록"].map((step, i) => (
           <span key={i} className={step === "→" ? "text-accent font-bold" : "rounded-md bg-muted px-3 py-1.5 text-sm"}>

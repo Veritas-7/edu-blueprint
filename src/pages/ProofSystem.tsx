@@ -60,6 +60,14 @@ const ProofSystem = () => {
       <PageHeader
         title="신뢰/성과 증빙 시스템"
         description="교육 사이트에서 신뢰를 구축하는 10가지 증빙 요소의 운영 기준과 배치 규칙을 제공합니다."
+        tocItems={[
+          ...(hasBrief ? [{ id: "brief-asset-status", label: "브리프 기반 자산 상태" }] : []),
+          { id: "proof-details", label: "증빙 요소 상세" },
+          { id: "proof-comparison", label: "증빙 강도 비교" },
+          { id: "placement-rules", label: "배치 규칙 매트릭스" },
+          { id: "proof-status-system", label: "증빙 상태 체계" },
+          { id: "core-rules", label: "핵심 규칙" },
+        ]}
         summaryCards={[
           { title: "강한 증빙", body: "강사진, 커리큘럼, 대상, 성과, 후기 (5개)" },
           { title: "보조 증빙", body: "시설, 운영, 상담, 교재, FAQ (5개)" },
@@ -75,7 +83,7 @@ const ProofSystem = () => {
 
       {hasBrief && (
         <section>
-          <h2 className="text-2xl font-bold">브리프 기반 자산 상태</h2>
+          <h2 id="brief-asset-status" className="text-2xl font-bold">브리프 기반 자산 상태</h2>
           <p className="mt-1 text-sm text-muted-foreground">현재 브리프 데이터 기준으로 각 증빙 요소의 보유 상태를 표시합니다.</p>
           <div className="mt-4 grid gap-3 md:grid-cols-2">
             {proofStatuses.map((ps) => (
@@ -105,7 +113,7 @@ const ProofSystem = () => {
       )}
 
       <section>
-        <h2 className="text-2xl font-bold">증빙 요소 상세</h2>
+        <h2 id="proof-details" className="text-2xl font-bold">증빙 요소 상세</h2>
         <div className="mt-4 space-y-4">
           {proofElements.map((el) => (
             <Card key={el.name}>
@@ -132,7 +140,7 @@ const ProofSystem = () => {
       </section>
 
       <section>
-        <h2 className="text-2xl font-bold">증빙 강도 비교</h2>
+        <h2 id="proof-comparison" className="text-2xl font-bold">증빙 강도 비교</h2>
         <div className="mt-4 overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
@@ -162,7 +170,7 @@ const ProofSystem = () => {
       <section><CopyBlock title="배치 규칙 매트릭스" content={placementMatrix} /></section>
 
       <section>
-        <h2 className="text-2xl font-bold">증빙 상태 체계</h2>
+        <h2 id="proof-status-system" className="text-2xl font-bold">증빙 상태 체계</h2>
         <div className="mt-4 grid gap-4 md:grid-cols-4">
           {(["보유", "부족", "비공개", "검토 필요"] as const).map(status => (
             <Card key={status}>
@@ -181,7 +189,7 @@ const ProofSystem = () => {
       </section>
 
       <section>
-        <h2 className="text-2xl font-bold">핵심 규칙</h2>
+        <h2 id="core-rules" className="text-2xl font-bold">핵심 규칙</h2>
         <div className="mt-4 space-y-2">
           {[
             "강한 증빙 2개 이상을 상담 CTA 근처에 배치해야 한다",

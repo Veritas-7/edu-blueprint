@@ -7,6 +7,13 @@ const UxGuide = () => (
     <PageHeader
       title="UX 가이드"
       description="교육 사이트 방문자의 대표 여정, 방문 목적별 분기, Above the Fold 정보 우선순위, 폼 최소화 전략, 모바일 UX 원칙을 제공합니다."
+      tocItems={[
+        { id: "user-journey", label: "대표 사용자 여정" },
+        { id: "purpose-routing", label: "방문 목적별 UX 분기" },
+        { id: "above-fold", label: "Above the Fold 정보 우선순위" },
+        { id: "form-minimize", label: "폼 최소화 전략" },
+        { id: "drop-points", label: "이탈 지점과 개선" },
+      ]}
       summaryCards={[
         { title: "핵심 여정", body: "유입 → 적합성 확인 → 과정 탐색 → 신뢰 판단 → 상담 전환" },
         { title: "5초 규칙", body: "첫 화면에서 대상 · 과정 · 행동(CTA)을 즉시 인지" },
@@ -20,9 +27,8 @@ const UxGuide = () => (
       ]}
     />
 
-    {/* 사용자 여정 */}
     <section>
-      <h2 className="text-2xl font-bold">대표 사용자 여정</h2>
+      <h2 id="user-journey" className="text-2xl font-bold">대표 사용자 여정</h2>
       <div className="mt-4 space-y-3">
         {[
           { step: "1", title: "검색 유입", desc: "지역+과목+대상 키워드로 유입. 첫 화면에서 적합성을 확인하려 함." },
@@ -43,9 +49,8 @@ const UxGuide = () => (
       </div>
     </section>
 
-    {/* 방문 목적별 분기 */}
     <section>
-      <h2 className="text-2xl font-bold">방문 목적별 UX 분기</h2>
+      <h2 id="purpose-routing" className="text-2xl font-bold">방문 목적별 UX 분기</h2>
       <div className="mt-4 grid gap-4 md:grid-cols-2">
         {[
           { type: "과정 비교형", ux: "필터+비교 카드 제공, 커리큘럼 아코디언" },
@@ -62,9 +67,8 @@ const UxGuide = () => (
       </div>
     </section>
 
-    {/* Above the Fold */}
     <section>
-      <h2 className="text-2xl font-bold">Above the Fold 정보 우선순위</h2>
+      <h2 id="above-fold" className="text-2xl font-bold">Above the Fold 정보 우선순위</h2>
       <div className="mt-4">
         <ol className="space-y-2">
           {[
@@ -82,9 +86,8 @@ const UxGuide = () => (
       </div>
     </section>
 
-    {/* 폼 최소화 */}
     <section>
-      <h2 className="text-2xl font-bold">폼 최소화 전략</h2>
+      <h2 id="form-minimize" className="text-2xl font-bold">폼 최소화 전략</h2>
       <div className="mt-4 grid gap-4 md:grid-cols-2">
         <Card>
           <CardHeader><CardTitle className="text-base text-success">권장 필드</CardTitle></CardHeader>
@@ -97,9 +100,8 @@ const UxGuide = () => (
       </div>
     </section>
 
-    {/* 이탈 지점 */}
     <section>
-      <h2 className="text-2xl font-bold">이탈이 많이 발생하는 지점과 개선</h2>
+      <h2 id="drop-points" className="text-2xl font-bold">이탈이 많이 발생하는 지점과 개선</h2>
       <div className="mt-4 space-y-3">
         {[
           { point: "첫 화면에서 대상 불명확", fix: "히어로에 대상 태그/학년 범위 명시" },

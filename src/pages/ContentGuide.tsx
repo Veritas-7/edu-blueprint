@@ -165,6 +165,20 @@ const ContentGuide = () => (
     <PageHeader
       title="콘텐츠 가이드"
       description="학원/교육 업종에서 신뢰를 높이는 문장 톤, 과정/강사진 소개 템플릿, 성과 서술 방식, CTA 라이브러리, 금지 표현을 제공합니다."
+      tocItems={[
+        { id: "tone-principles", label: "신뢰 문장 톤" },
+        { id: "hero-copy", label: "히어로 카피 공식" },
+        { id: "cta-library", label: "CTA 문구 라이브러리" },
+        { id: "program-template", label: "과정 소개 템플릿" },
+        { id: "teacher-template", label: "강사진 소개 템플릿" },
+        { id: "results-writing", label: "성과/합격 서술 방식" },
+        { id: "review-template", label: "후기 요약 방식" },
+        { id: "consulting-template", label: "상담 안내 템플릿" },
+        { id: "event-template", label: "설명회/체험수업 템플릿" },
+        { id: "faq-writing", label: "FAQ 작성 방식" },
+        { id: "labeling-guide", label: "표기 가이드" },
+        { id: "forbidden-phrases", label: "금지 표현 + 대체 표현" },
+      ]}
       summaryCards={[
         { title: "톤 원칙", body: "신뢰형 · 구체적 · 과장 없음 · 대상 명확" },
         { title: "핵심 템플릿 8종", body: "히어로, 과정, 강사진, 후기, FAQ, 상담, 설명회, 표기 가이드" },
@@ -179,9 +193,8 @@ const ContentGuide = () => (
       ]}
     />
 
-    {/* 톤 원칙 */}
     <section>
-      <h2 className="text-2xl font-bold">신뢰를 높이는 문장 톤</h2>
+      <h2 id="tone-principles" className="text-2xl font-bold">신뢰를 높이는 문장 톤</h2>
       <div className="mt-4 grid gap-4 md:grid-cols-2">
         {[
           { title: "구체적 대상 명시", good: "'중2~고1 내신 대비 학생을 위한'", bad: "'학생 여러분'" },
@@ -202,33 +215,28 @@ const ContentGuide = () => (
       </div>
     </section>
 
-    {/* 히어로 카피 */}
     <section>
-      <h2 className="text-2xl font-bold">히어로 카피 공식</h2>
+      <h2 id="hero-copy" className="text-2xl font-bold">히어로 카피 공식</h2>
       <CopyBlock title="히어로 문장 구조 + 예시" content={heroFormula} />
     </section>
 
-    {/* CTA 라이브러리 */}
     <section>
-      <h2 className="text-2xl font-bold">CTA 문구 라이브러리</h2>
+      <h2 id="cta-library" className="text-2xl font-bold">CTA 문구 라이브러리</h2>
       <CopyBlock title="CTA 문구 모음 (우선순위별)" content={ctaLibrary} />
     </section>
 
-    {/* 과정 소개 */}
     <section>
-      <h2 className="text-2xl font-bold">과정 소개 문장 템플릿</h2>
+      <h2 id="program-template" className="text-2xl font-bold">과정 소개 문장 템플릿</h2>
       <CopyBlock title="과정 소개 구조 + 예시" content={programTemplate} />
     </section>
 
-    {/* 강사진 소개 */}
     <section>
-      <h2 className="text-2xl font-bold">강사진 소개 문장 템플릿</h2>
+      <h2 id="teacher-template" className="text-2xl font-bold">강사진 소개 문장 템플릿</h2>
       <CopyBlock title="강사진 소개 구조 + 예시" content={teacherTemplate} />
     </section>
 
-    {/* 성과 서술 */}
     <section>
-      <h2 className="text-2xl font-bold">성과/합격 사례 서술 방식</h2>
+      <h2 id="results-writing" className="text-2xl font-bold">성과/합격 사례 서술 방식</h2>
       <Card className="mt-4 border-warning">
         <CardContent className="p-4 space-y-3 text-sm">
           <div className="flex items-center gap-2"><BadgeTag type="검토 필요" /><span className="font-semibold">가장 주의 필요한 영역</span></div>
@@ -242,39 +250,33 @@ const ContentGuide = () => (
       </Card>
     </section>
 
-    {/* 후기 */}
     <section>
-      <h2 className="text-2xl font-bold">후기 요약 방식</h2>
+      <h2 id="review-template" className="text-2xl font-bold">후기 요약 방식</h2>
       <CopyBlock title="후기 작성 구조 + 규칙" content={reviewTemplate} />
     </section>
 
-    {/* 상담 안내 */}
     <section>
-      <h2 className="text-2xl font-bold">상담 안내 문장 템플릿</h2>
+      <h2 id="consulting-template" className="text-2xl font-bold">상담 안내 문장 템플릿</h2>
       <CopyBlock title="상담 안내 예시" content={consultingTemplate} />
     </section>
 
-    {/* 설명회/체험수업 */}
     <section>
-      <h2 className="text-2xl font-bold">설명회/체험수업 안내 템플릿</h2>
+      <h2 id="event-template" className="text-2xl font-bold">설명회/체험수업 안내 템플릿</h2>
       <CopyBlock title="설명회/체험수업 예시" content={eventTemplate} />
     </section>
 
-    {/* FAQ */}
     <section>
-      <h2 className="text-2xl font-bold">FAQ 작성 방식</h2>
+      <h2 id="faq-writing" className="text-2xl font-bold">FAQ 작성 방식</h2>
       <CopyBlock title="FAQ 작성 구조 + 예시" content={faqTemplate} />
     </section>
 
-    {/* 표기 가이드 */}
     <section>
-      <h2 className="text-2xl font-bold">수강 대상/레벨/기간/운영 표기 가이드</h2>
+      <h2 id="labeling-guide" className="text-2xl font-bold">수강 대상/레벨/기간/운영 표기 가이드</h2>
       <CopyBlock title="표기 가이드" content={labelingGuide} />
     </section>
 
-    {/* 금지 표현 */}
     <section>
-      <h2 className="text-2xl font-bold">금지 표현 + 대체 표현</h2>
+      <h2 id="forbidden-phrases" className="text-2xl font-bold">금지 표현 + 대체 표현</h2>
       <div className="mt-2 flex items-center gap-2"><BadgeTag type="금지" /><span className="text-sm text-muted-foreground">아래 표현은 어떤 페이지에서도 사용하지 않습니다</span></div>
       <CopyBlock title="금지 표현 + 대체안" content={forbiddenPhrases} />
     </section>

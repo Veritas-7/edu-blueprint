@@ -1,16 +1,20 @@
 import { ReactNode } from "react";
 import { BadgeTag } from "@/components/docs/BadgeTag";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { TableOfContents } from "@/components/docs/TableOfContents";
+
+type TocItem = { id: string; label: string };
 
 type PageHeaderProps = {
   title: string;
   description: string;
   summaryCards: { title: string; body: string }[];
   quickApply: string[];
+  tocItems?: TocItem[];
   children?: ReactNode;
 };
 
-export const PageHeader = ({ title, description, summaryCards, quickApply, children }: PageHeaderProps) => {
+export const PageHeader = ({ title, description, summaryCards, quickApply, tocItems, children }: PageHeaderProps) => {
   return (
     <header className="space-y-6">
       <div className="space-y-3">
@@ -40,6 +44,8 @@ export const PageHeader = ({ title, description, summaryCards, quickApply, child
           ))}
         </ul>
       </section>
+
+      {tocItems && tocItems.length > 0 && <TableOfContents items={tocItems} />}
 
       {children}
     </header>

@@ -24,6 +24,14 @@ const DesignGuide = () => (
     <PageHeader
       title="디자인 가이드"
       description="학원/교육 업종 사이트의 브랜드 톤, 컬러 토큰, 타이포그래피, 간격, 이미지 사용 기준, 금지 표현까지 체계화합니다."
+      tocItems={[
+        { id: "visual-keywords", label: "비주얼 키워드" },
+        { id: "color-system", label: "추천 컬러 시스템" },
+        { id: "typography", label: "타이포그래피 시스템" },
+        { id: "spacing", label: "간격/라운드/그림자" },
+        { id: "image-rules", label: "이미지 사용 기준" },
+        { id: "forbidden-visuals", label: "금지 시각 표현" },
+      ]}
       summaryCards={[
         { title: "브랜드 톤", body: "Trustworthy · Organized · Clear · Modern · Academic but not stiff" },
         { title: "컬러 축", body: "네이비 + 슬레이트 + 화이트 기본, 오렌지/틸 보조색 1~2개" },
@@ -38,7 +46,7 @@ const DesignGuide = () => (
     />
 
     <section>
-      <h2 className="text-2xl font-bold">비주얼 키워드</h2>
+      <h2 id="visual-keywords" className="text-2xl font-bold">비주얼 키워드</h2>
       <div className="mt-4 flex flex-wrap gap-2">
         {["trustworthy", "organized", "clear", "modern", "academic", "motivating", "parent-friendly", "student-friendly", "professional", "mobile-first", "conversion-oriented"].map((w) => (
           <span key={w} className="rounded-full border bg-muted px-3 py-1 text-sm">{w}</span>
@@ -47,7 +55,7 @@ const DesignGuide = () => (
     </section>
 
     <section>
-      <h2 className="text-2xl font-bold">추천 컬러 시스템</h2>
+      <h2 id="color-system" className="text-2xl font-bold">추천 컬러 시스템</h2>
       <CopyBlock title="컬러 토큰 (HSL)" content={colorTokens} />
       <div className="mt-6 grid grid-cols-3 gap-3 sm:grid-cols-6">
         {[
@@ -64,7 +72,7 @@ const DesignGuide = () => (
     </section>
 
     <section>
-      <h2 className="text-2xl font-bold">타이포그래피 시스템</h2>
+      <h2 id="typography" className="text-2xl font-bold">타이포그래피 시스템</h2>
       <CopyBlock title="타이포 스케일" content={typoScale} />
       <div className="mt-6 space-y-4">
         <div><h1 className="text-4xl font-bold tracking-tight">H1 — 학원 이름 또는 메인 가치 (페이지당 1개)</h1></div>
@@ -76,7 +84,7 @@ const DesignGuide = () => (
     </section>
 
     <section>
-      <h2 className="text-2xl font-bold">간격/라운드/그림자 시스템</h2>
+      <h2 id="spacing" className="text-2xl font-bold">간격/라운드/그림자 시스템</h2>
       <div className="mt-4 grid gap-4 md:grid-cols-3">
         <Card><CardHeader><CardTitle className="text-base">간격</CardTitle></CardHeader><CardContent className="text-sm text-muted-foreground">4px 단위, 섹션 간 48~64px, 카드 내부 16~24px</CardContent></Card>
         <Card><CardHeader><CardTitle className="text-base">라운드</CardTitle></CardHeader><CardContent className="text-sm text-muted-foreground">sm 2px / md 6px / lg 8px / full(칩·뱃지만)</CardContent></Card>
@@ -85,7 +93,7 @@ const DesignGuide = () => (
     </section>
 
     <section>
-      <h2 className="text-2xl font-bold">이미지 사용 기준</h2>
+      <h2 id="image-rules" className="text-2xl font-bold">이미지 사용 기준</h2>
       <div className="mt-4 space-y-3">
         {[
           { label: "강사진 사진", rule: "자연스러운 상반신, 과도한 보정 금지, 실제 촬영 권장" },
@@ -103,7 +111,7 @@ const DesignGuide = () => (
     </section>
 
     <section>
-      <h2 className="text-2xl font-bold">금지해야 할 시각 표현</h2>
+      <h2 id="forbidden-visuals" className="text-2xl font-bold">금지해야 할 시각 표현</h2>
       <div className="mt-4 grid gap-3 md:grid-cols-2">
         {[
           "과도한 글래스모피즘/투명 효과",

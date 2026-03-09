@@ -11,6 +11,16 @@ const UiGuide = () => (
     <PageHeader
       title="UI 가이드"
       description="학원/교육 사이트에서 반복 사용되는 UI 컴포넌트 패턴, 사용 목적, 배치 기준, 접근성 주의사항을 정리합니다."
+      tocItems={[
+        { id: "info-bar", label: "상단 정보 바" },
+        { id: "hero-section", label: "히어로 섹션 패턴" },
+        { id: "course-cards", label: "과정/프로그램 카드" },
+        { id: "teacher-cards", label: "강사진 프로필 카드" },
+        { id: "mobile-cta-bar", label: "모바일 하단 고정 CTA 바" },
+        { id: "contact-form", label: "문의 폼" },
+        { id: "button-system", label: "버튼 시스템" },
+        { id: "faq-accordion", label: "FAQ 아코디언" },
+      ]}
       summaryCards={[
         { title: "핵심 컴포넌트", body: "상단 정보바, 히어로, 과정 카드, 강사진 카드, 상담 CTA, 모바일 고정바" },
         { title: "상태 관리", body: "hover / focus / active / disabled 4가지 상태를 모든 인터랙션 요소에 적용" },
@@ -24,9 +34,8 @@ const UiGuide = () => (
       ]}
     />
 
-    {/* 상단 정보바 */}
     <section>
-      <h2 className="text-2xl font-bold">상단 정보 바</h2>
+      <h2 id="info-bar" className="text-2xl font-bold">상단 정보 바</h2>
       <div className="mt-2 flex items-center gap-1"><BadgeTag type="필수" /></div>
       <Card className="mt-4">
         <CardContent className="p-4">
@@ -46,9 +55,8 @@ const UiGuide = () => (
       </Card>
     </section>
 
-    {/* 히어로 섹션 */}
     <section>
-      <h2 className="text-2xl font-bold">히어로 섹션 패턴</h2>
+      <h2 id="hero-section" className="text-2xl font-bold">히어로 섹션 패턴</h2>
       <div className="mt-2 flex items-center gap-1"><BadgeTag type="필수" /></div>
       <Card className="mt-4 overflow-hidden">
         <CardContent className="p-0">
@@ -66,9 +74,8 @@ const UiGuide = () => (
       <p className="mt-3 text-sm text-muted-foreground">핵심: 대상(누구를 위한) + 가치(무엇을 얻는) + CTA(지금 무엇을 하는) 3요소 필수. 과장된 성과 문구 금지.</p>
     </section>
 
-    {/* 과정/프로그램 카드 */}
     <section>
-      <h2 className="text-2xl font-bold">과정/프로그램 카드</h2>
+      <h2 id="course-cards" className="text-2xl font-bold">과정/프로그램 카드</h2>
       <div className="mt-2 flex items-center gap-1"><BadgeTag type="필수" /></div>
       <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {[
@@ -92,9 +99,8 @@ const UiGuide = () => (
       <p className="mt-3 text-sm text-muted-foreground">카드에 대상·과목·시간 포함 필수. 수강료 비공개 시 "상담 안내" CTA 대체.</p>
     </section>
 
-    {/* 강사진 프로필 카드 */}
     <section>
-      <h2 className="text-2xl font-bold">강사진 프로필 카드</h2>
+      <h2 id="teacher-cards" className="text-2xl font-bold">강사진 프로필 카드</h2>
       <div className="mt-2 flex items-center gap-1"><BadgeTag type="필수" /> <BadgeTag type="proof 필요" /></div>
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
         {[
@@ -117,9 +123,8 @@ const UiGuide = () => (
       <p className="mt-3 text-sm text-muted-foreground">허위 경력 금지. 경력 미확보 시 교육 철학/운영 방식 중심으로 대체.</p>
     </section>
 
-    {/* 모바일 하단 고정 CTA 바 */}
     <section>
-      <h2 className="text-2xl font-bold">모바일 하단 고정 CTA 바</h2>
+      <h2 id="mobile-cta-bar" className="text-2xl font-bold">모바일 하단 고정 CTA 바</h2>
       <div className="mt-2 flex items-center gap-1"><BadgeTag type="필수" /></div>
       <Card className="mt-4">
         <CardContent className="p-4">
@@ -136,9 +141,8 @@ const UiGuide = () => (
       </Card>
     </section>
 
-    {/* 문의 폼 */}
     <section>
-      <h2 className="text-2xl font-bold">문의 폼</h2>
+      <h2 id="contact-form" className="text-2xl font-bold">문의 폼</h2>
       <div className="mt-2 flex items-center gap-1"><BadgeTag type="필수" /></div>
       <Card className="mt-4">
         <CardContent className="p-6">
@@ -154,9 +158,8 @@ const UiGuide = () => (
       </Card>
     </section>
 
-    {/* 버튼 시스템 */}
     <section>
-      <h2 className="text-2xl font-bold">버튼 시스템</h2>
+      <h2 id="button-system" className="text-2xl font-bold">버튼 시스템</h2>
       <div className="mt-4 flex flex-wrap gap-3">
         <Button>Primary CTA</Button>
         <Button className="bg-accent text-accent-foreground hover:bg-accent/90">Accent CTA</Button>
@@ -167,9 +170,8 @@ const UiGuide = () => (
       <p className="mt-3 text-sm text-muted-foreground">CTA 계층: 1차(Accent) → 2차(Primary) → 보조(Outline/Ghost). Disabled 상태 필수 구현.</p>
     </section>
 
-    {/* FAQ 아코디언 */}
     <section>
-      <h2 className="text-2xl font-bold">FAQ 아코디언</h2>
+      <h2 id="faq-accordion" className="text-2xl font-bold">FAQ 아코디언</h2>
       <div className="mt-2 flex items-center gap-1"><BadgeTag type="권장" /></div>
       <Card className="mt-4">
         <CardContent className="p-4 space-y-2">
