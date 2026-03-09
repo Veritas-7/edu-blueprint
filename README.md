@@ -64,7 +64,13 @@ npm run build
 ## 테스트
 
 ```bash
-npm test
+npm test          # 40+ 테스트 (brief-schema, brief-engine, navigation, seo)
+```
+
+## 린트
+
+```bash
+npm run lint
 ```
 
 ## 핵심 방향
