@@ -2,6 +2,20 @@
 
 학원·교육 업종 홈페이지를 빠르게 제작하기 위한 **내부용 가이드 사이트 + 고객사 브리프 도구 + 공개용 사이트 청사진 생성 시스템**입니다.
 
+<!-- SOURCE_DERIVED_DESIGN_CONTRACT_START -->
+
+## Source-derived design contract
+
+This repository includes a source-derived [DESIGN.md](./DESIGN.md) for recreating the same homepage style, color system, component rhythm, and industry-specific UI rules from implementation evidence.
+
+- Public reference repo: https://github.com/Veritas-7/edu-blueprint
+- Industry: 학원/교육
+- Source evidence: `src/index.css`, `tailwind.config.ts`, route/navigation data, guide components, and industry configuration
+- Verification gates: `design-md-lint DESIGN.md`, `npm run build`, `npm test`, `npm run lint`
+
+<!-- SOURCE_DERIVED_DESIGN_CONTRACT_END -->
+
+
 ## 목적
 
 - 다양한 교육 고객사 프로젝트에 **재사용 가능한 제작 기준서**를 제공
